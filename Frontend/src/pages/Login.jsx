@@ -6,6 +6,7 @@ const LoginPage = () => {
     <div>
         <Navbar />
         <h1>Login</h1>
+        
     </div>
   );
 };
