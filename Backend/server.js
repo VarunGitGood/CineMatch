@@ -4,22 +4,18 @@ const colors = require("colors");
 const errorHandler = require("./middleware/error");
 const connection = require("./config/db");
 const cors = require("cors");
-// loading env variables from env
+
+
 dot.config({ path: "./config/config.env" });
 const PORT = process.env.PORT || 8000;
-
-//db connected
 connection();
 
 const app = express();
-//using parser
-app.use(express.json());
 
-//mounting middleware
+app.use(express.json());
 app.use(cors())
 app.use(errorHandler);
 
-//handler for unhandled errors
 process.on("unhandledRejection", (err, promise) => {
   console.log(`Error: ${err.message}\nClosing server`.bold.red);
   server.close(() => {
