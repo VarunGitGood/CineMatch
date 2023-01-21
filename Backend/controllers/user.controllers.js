@@ -1,9 +1,11 @@
 const ErrorResponse = require("../middleware/errorResponse");
-const User = require("../models/User");
-const asyncHandler = require("../middleware/async");
+const User = require("../model/User");
+const asyncHandler = require("../middleware/asyncHandler");
+const sendTokenResponse = require("../middleware/token");
 
 exports.createUser = asyncHandler(async (req, res, next) => {
   const { name, email, password } = req.body;
+  console.log(req.body);
   if (!name || !email || !password) {
     return next(
       new ErrorResponse(`Please provide name, email and password`, 400)
@@ -34,35 +36,47 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
 });
 
 exports.followUser = asyncHandler(async (req, res, next) => {
-  const { id } = req.params;
-  const user = await User.findById(id);
-  if (!user) {
-    return next(new ErrorResponse(`User not found with id of ${id}`, 404));
-  }
-  if (user.followers.includes(req.user.id)) {
-    return next(new ErrorResponse(`You already follow this user`, 400));
-  }
-  user.followers.push(req.user.id);
-  await user.save();
-  res.status(200).json({
-    success: true,
-    data: `You are now following ${user.name}`,
-  });
+    const { id } = req.params;
+    const user2 = await User.findById(id);
+    const user1 = await User.findById(req.user._id);
+    if (!user2) {
+        return next(new Error("User not found"));
+        }
+    if (user2.followers.includes(req.user._id)) {
+        return next(new Error("You already follow this user"));
+        }
+    user2.followers.push(user1._id);
+    user1.following.push(user2._id);
+    await user1.save();
+    await user2.save();
+    console.log(user1);
+    console.log(user2);
+    res.status(200).json({
+        success: true,
+    });
 });
 
 exports.unfollowUser = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   const user = await User.findById(id);
   if (!user) {
-    return next(new ErrorResponse(`User not found with id of ${id}`, 404));
+    return next(new Error("User not found"));
   }
-  if (!user.followers.includes(req.user.id)) {
-    return next(new ErrorResponse(`You don't follow this user`, 400));
+  if (!user.followers.includes(req.user._id)) {
+    return next(new Error("You don't follow this user"));
   }
-  user.followers.pull(req.user.id);
-  await user.save();
+
+  const updatedUser = await User.findById(req.user._id);
+  updatedUser.following = updatedUser.following.filter(
+    (following) => following.toString() !== user._id.toString()
+  );
+  await updatedUser.save();
+  const reqUpdatedUser = await User.findById(user._id);
+  reqUpdatedUser.followers = reqUpdatedUser.followers.filter(
+    (follower) => follower.toString() !== req.user._id.toString()
+  );
+  await reqUpdatedUser.save();
   res.status(200).json({
     success: true,
-    data: `You are no longer following ${user.name}`,
   });
 });
