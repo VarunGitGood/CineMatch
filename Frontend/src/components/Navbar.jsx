@@ -1,12 +1,15 @@
 import React from "react";
+import { useContext } from "react";
+import { themeProvider } from "../context/themeContext";
 
- const Navbar = (props) => {
+export const Navbar = () => {
+  const { theme, toggleTheme } = useContext(themeProvider);
   return (
     <nav className='grid grid-cols-2 place-content-between items-center p-10'>
       <h4>home</h4>
       <button
         onClick={() => {
-          props.darkMode.toggleTheme();
+          toggleTheme();
         }}
         className='self-left justify-self-end'
       >

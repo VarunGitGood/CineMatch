@@ -6,21 +6,6 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 
 function App() {
-  const [theme, setTheme] = useState("light");
-  const toggleTheme = () => {
-    if (theme === "light") {
-      setTheme("dark");
-    } else {
-      setTheme("light");
-    }
-  };
-  useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [theme]);
   return (
     <div className='App dark:bg-black'>
       <Routes>
