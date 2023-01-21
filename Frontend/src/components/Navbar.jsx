@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Navbar = (props) => {
+ const Navbar = (props) => {
   return (
     <nav className='grid grid-cols-2 place-content-between items-center p-10'>
       <h4>home</h4>
@@ -15,3 +15,4 @@ export const Navbar = (props) => {
     </nav>
   );
 };
+export default Navbar;
