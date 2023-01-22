@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { Link, Navigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import ProtectedRoute from "../components/ProtectedRoute";
 import { AuthProvider } from "../context/AuthContext";
 import profileBG from "../assets/profile-bg.webp";
 const Profile = () => {
@@ -19,7 +18,7 @@ const Profile = () => {
               alt='Profile image'
             />
             <h1 className='p-2 text-xl md:text-2xl font-bold mb-2 text-gray-900 dark:text-white'>
-              Varun Lauda
+              Varun Singh
             </h1>
             <div className='mt-2'>
               <span className='font-semibold dark:text-purple-700'>Email:</span>

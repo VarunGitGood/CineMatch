@@ -5,18 +5,18 @@ const ContentSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please add a title"],
     },
-    description: {
+    overview: {
         type: String,
         required: [true, "Please add a description"],
     },
-    image: {
+    url: {
         type: String,
     },
     rating: {
         type: Number,
         required: [true, "Please add a rating"],
     },
-    genre: [
+    genres: [
         {
             type: String,
             required: [true, "Please add a genre"],
@@ -31,11 +31,7 @@ const ContentSchema = new mongoose.Schema({
             type: String,
             required: [true, "Please add a cast"],
         }
-    ],
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
+    ]
 });
 
 module.exports = mongoose.model("content", ContentSchema);

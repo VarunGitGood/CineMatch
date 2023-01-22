@@ -16,6 +16,7 @@ const {
 const { protect } = require("../middleware/protect.js");
 
 routes.route("/create").get(protect, createWatchlist);
+routes.route("/generate").post(protect, generateWatchlist);
 routes.route("/getList/:listId").get(protect, getWatchlist);
 routes.route("/getAllLists").get(protect, getWatchlists);
 routes.route("/delete/:id").delete(protect,deleteWatchlist);

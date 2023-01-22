@@ -2,14 +2,8 @@ const Content = require("../model/Content");
 const Watchlist = require("../model/Watchlist");
 const ErrorResponse = require("../middleware/error");
 const asyncHandler = require("../middleware/asyncHandler");
-
-
-exports.addContent  = 
-
-
-
-
-
+const axios = require("axios");
+const URL = "http://127.0.0.1:5000";
 
 // create watchlist
 exports.createWatchlist = asyncHandler(async (req, res, next) => {
@@ -36,13 +30,44 @@ exports.getWatchlist = asyncHandler(async (req, res, next) => {
 });
 
 // generate watchlist
-exports.generateWatchlist = asyncHandler(async (req, res, next) => {});
+exports.generateWatchlist = asyncHandler(async (req, res, next) => {
+  // we will get a list of 10 content from the api call
+  // store it in a new list
+  // return the list
+  try {
+    const user = req.user;
+    const watchlist = await Watchlist.create({
+      user,
+    });
+    const {genres} = req.body;
+    const response = await axios.post(`${URL}/genre_recommendation`, {
+      genres
+    });
+    const { data } = response;
+    console.log(data);
+    const contentList = [];
+    data.data.map((i) => {
+      contentList.push(i)
+    })
+    watchlist.list = contentList;
+    await watchlist.save();
+    
+    res.status(200).json({
+      success: true,
+      data: watchlist,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+exports.getGenre = asyncHandler(async (req, res, next) => {});
 
 // add content to watchlist
 // list id is in params   which watchlist to add to
 // content id is in body  which content to add
 exports.addToWatchlist = asyncHandler(async (req, res, next) => {
-  const { listId,contentId } = req.params;
+  const { listId, contentId } = req.params;
   // const { contentId } = req.body;
   const watchlist = await Watchlist.findOne({ _id: listId });
   if (!watchlist) {
@@ -63,7 +88,6 @@ exports.addToWatchlist = asyncHandler(async (req, res, next) => {
     data: watchlist,
   });
 });
-
 
 // remove content from watchlist
 // list id is in params   which watchlist to remove from
@@ -90,7 +114,6 @@ exports.removeFromWatchlist = asyncHandler(async (req, res, next) => {
     data: watchlist,
   });
 });
-
 
 // delete watchlist
 exports.deleteWatchlist = asyncHandler(async (req, res, next) => {
