@@ -11,15 +11,15 @@ exports.ValidateUserController = asyncHandler(async (req, res, next) => {
 });
 
 exports.createUser = asyncHandler(async (req, res, next) => {
-  const { name, email, password } = req.body;
+  const { username, email, password } = req.body;
   console.log(req.body);
-  if (!name || !email || !password) {
+  if (!username || !email || !password) {
     return next(
       new ErrorResponse(`Please provide name, email and password`, 400)
     );
   }
   const user = await User.create({
-    name,
+    username,
     email,
     password,
   });
