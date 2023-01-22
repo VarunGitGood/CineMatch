@@ -5,21 +5,29 @@ import Navbar from "../components/Navbar";
 import { AuthProvider } from "../context/AuthContext";
 
 const LoginPage = () => {
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { token, setToken } = useContext(AuthProvider);
+  const { setUser } = useContext(AuthProvider);
   const navigate = useNavigate();
   const submitHandler = async () => {
+    setLoading(true);
     try {
       const response = await axios.post("http://localhost:8000/api/v1/login", {
         email,
         password,
       });
-      setToken(response.data.token);
-      localStorage.setItem("token", response.data.token);
+      setUser({
+        user: response.data.user,
+        token: response.data.token,
+        isAuthenticated: true,
+      });
+      window.localStorage.setItem("token", response.data.token);
+      console.log(response.data);
+      setLoading(false);
       navigate("/profile");
-      console.log(response);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -80,15 +88,13 @@ const LoginPage = () => {
 
                 <div className='mt-10'>
                   <button
-                    className='bg-purple-500 text-gray-100 p-4 w-full rounded-full tracking-wide
+                    className={`bg-purple-500 text-gray-100 p-4 w-full rounded-full tracking-wide
                                 font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-purple-600
-                                shadow-lg'
-                    omSubmit={(e) => {
-                      e.preventDefault();
-                      submitHandler();
-                    }}
+                                shadow-lg ${loading ? "opacity-50" : ""}`}
+                    type='submit'
+                    disabled={loading}
                   >
-                    Log In
+                    {loading ? "Loading..." : "Log In"}
                   </button>
                 </div>
               </form>

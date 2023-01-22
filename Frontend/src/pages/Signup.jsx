@@ -4,28 +4,40 @@ import Navbar from "../components/Navbar";
 import axios from "axios";
 import { AuthProvider } from "../context/AuthContext";
 export default function Signup() {
-  const { token, setToken } = useContext(AuthProvider);
+  const [loading, setLoading] = useState(false);
+  const { user, setUser } = useContext(AuthProvider);
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     try {
       const res = await axios.post("http://localhost:8000/api/v1/signup", {
         email,
-        name: username,
+        username,
         password,
       });
-
-      setToken(res.data.token);
+      setUser({
+        user: res.data.user,
+        token: res.data.token,
+        isAuthenticated: true,
+      });
+      localStorage.setItem("token", res.data.token);
+      setLoading(false);
       navigate("/profile");
     } catch (error) {
-      console.log(error);
+      setLoading(false);
+      setUser({
+        user: null,
+        token: null,
+        isAuthenticated: false,
+      });
     }
   };
-  if (!token) {
+  if (user.isAuthenticated === false)
     return (
       <div>
         <Navbar />
@@ -89,12 +101,13 @@ export default function Signup() {
 
                   <div className='mt-10'>
                     <button
-                      className='bg-purple-700 text-gray-100 p-4 w-full rounded-full tracking-wide
+                      className={`bg-purple-700 text-gray-100 p-4 w-full rounded-full tracking-wide
                                 font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-purple-600 
-                                shadow-lg'
+                                shadow-lg ${loading && "opacity-50"}`}
                       type='submit'
+                      disabled={loading}
                     >
-                      Log In
+                      {loading ? "Loading..." : "Sign Up"}
                     </button>
                   </div>
                 </form>
@@ -271,7 +284,7 @@ export default function Signup() {
         </div>
       </div>
     );
-  } else {
-    <Navigate to='/ ' />;
+  else if (user.isAuthenticated === true) {
+    return <Navigate to='/profile' />;
   }
 }
