@@ -3,7 +3,7 @@ Cinematch is a movie/series recommendation platform uses a cutting-edge machine 
 ### Features
 
 * It uses ML model to recommend moviesand web series based on your preference.
-* Allows you to create multiple watchlists according to your mood
+* Allow you to create multiple watchlists according to your mood
 * Option to share your watchlists with friends
 * Provides related movie/series suggestions based on recent films/series you've watched
 * Regularly updated library of films and series to explore
