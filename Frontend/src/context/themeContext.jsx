@@ -5,7 +5,9 @@ const ThemeContextProvide = (props) => {
   const toggleTheme = () => {
     if (theme === "light") {
       setTheme("dark");
+      document.body.style.backgroundColor = "#121212";
     } else {
+      document.body.style.backgroundColor = "#fff";
       setTheme("light");
     }
   };
