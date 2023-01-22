@@ -3,6 +3,13 @@ const User = require("../model/User");
 const asyncHandler = require("../middleware/asyncHandler");
 const sendTokenResponse = require("../middleware/token");
 
+exports.ValidateUserController = asyncHandler(async (req, res, next) => {
+  res.status(200).json({
+    success: true,
+    data: req.user,
+  });
+});
+
 exports.createUser = asyncHandler(async (req, res, next) => {
   const { name, email, password } = req.body;
   console.log(req.body);
@@ -36,24 +43,24 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
 });
 
 exports.followUser = asyncHandler(async (req, res, next) => {
-    const { id } = req.params;
-    const user2 = await User.findById(id);
-    const user1 = await User.findById(req.user._id);
-    if (!user2) {
-        return next(new Error("User not found"));
-        }
-    if (user2.followers.includes(req.user._id)) {
-        return next(new Error("You already follow this user"));
-        }
-    user2.followers.push(user1._id);
-    user1.following.push(user2._id);
-    await user1.save();
-    await user2.save();
-    console.log(user1);
-    console.log(user2);
-    res.status(200).json({
-        success: true,
-    });
+  const { id } = req.params;
+  const user2 = await User.findById(id);
+  const user1 = await User.findById(req.user._id);
+  if (!user2) {
+    return next(new Error("User not found"));
+  }
+  if (user2.followers.includes(req.user._id)) {
+    return next(new Error("You already follow this user"));
+  }
+  user2.followers.push(user1._id);
+  user1.following.push(user2._id);
+  await user1.save();
+  await user2.save();
+  console.log(user1);
+  console.log(user2);
+  res.status(200).json({
+    success: true,
+  });
 });
 
 exports.unfollowUser = asyncHandler(async (req, res, next) => {

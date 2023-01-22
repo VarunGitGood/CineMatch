@@ -1,16 +1,17 @@
 import { createContext, useEffect, useState } from "react";
-export const AuthProvide = createContext();
+export const AuthProvider = createContext();
 
 const AuthContextProvide = (props) => {
   const [token, setToken] = useState(null);
   return (
-    <AuthProvide.Provider
+    <AuthProvider.Provider
       value={{
         token,
+        setToken,
       }}
     >
       {props.children}
-    </AuthProvide.Provider>
+    </AuthProvider.Provider>
   );
 };
 export default AuthContextProvide;
