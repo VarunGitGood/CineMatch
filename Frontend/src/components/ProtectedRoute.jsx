@@ -4,11 +4,12 @@ import { Navigate } from "react-router-dom";
 import { AuthProvider } from "../context/AuthContext";
 
 const ProtectedRoute = ({ children }) => {
-  const { token } = useContext(AuthProvider);
-  const [isValidUser, setIsValidUser] = useState(false);
+  const { token, isAuthenticated, setIsAuthenticated } =
+    useContext(AuthProvider);
   const validateUser = async () => {
     try {
       if (token) {
+        console.log("token is ", token);
         const response = await axios.get(
           "http://localhost:8000/api/v1/validate",
           {
@@ -19,25 +20,22 @@ const ProtectedRoute = ({ children }) => {
         );
         console.log("validateUser");
         console.log(response);
-        if (response.status === 200) {
-          setIsValidUser(true);
-        }
+        setIsAuthenticated(true);
       }
     } catch (error) {
       console.log(error);
-      setIsValidUser(false);
+      setIsAuthenticated(false);
     }
   };
 
   if (token) {
     validateUser();
-    if (isValidUser) {
+    if (isAuthenticated) {
       return children;
     } else {
       <Navigate to='/login' />;
     }
   }
-  return <Navigate to='/login' />;
 };
 
 export default ProtectedRoute;
