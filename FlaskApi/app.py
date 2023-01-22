@@ -5,8 +5,7 @@ import pandas as pd
 
 app = Flask(__name__)
 
-# with open('recommend.pkl', 'rb') as f:
-#         recommend1 = pickle.load(f)
+
 with open('similarity_genre.pkl', 'rb') as f:
     gen_similarity = pickle.load(f)
 with open('similarity_recommend.pkl', 'rb') as f:
@@ -27,7 +26,6 @@ def recommend():
     distances = similarity[movie_index]
     movies_list = sorted(list(enumerate(distances)),
                          reverse=True, key=lambda x: x[1])[0:5]
-    print((movies_list))
     for i in movies_list:
         print(movie_list.iloc[i[0]].title)
 
@@ -41,7 +39,6 @@ def recommend_genre():
     genre_similarity = genre_similarity.argsort()[::-1]
     recommended_movies = []
     for i in genre_similarity[:10]:
-        print(movie_list.iloc[i])
         recommended_movies.append(movie_list.iloc[i].to_dict())
     return jsonify({"data": recommended_movies})
 

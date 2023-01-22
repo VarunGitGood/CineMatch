@@ -1,10 +1,10 @@
 import React from "react";
 
-function Card({data}) {
-    console.log(data);
+function Card({ data }) {
+  console.log(data);
   return (
     <>
-      <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12 m-0">
+      <div className="h-auto bg-gray-100 py-6 flex flex-col justify-center sm:py-12 m-0">
         <div className="sm:max-w-xl sm:mx-auto">
           <div className="bg-white shadow-lg border-gray-100 max-h-80	 border sm:rounded-3xl p-8 flex space-x-4">
             <div className="h-48 overflow-visible w-1/2 flex justify-center align-center">
