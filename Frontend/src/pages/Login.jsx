@@ -9,14 +9,14 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const { token, setToken } = useContext(AuthProvider);
   const navigate = useNavigate();
-  const submitHandler = async (e) => {
-    e.preventDefault();
+  const submitHandler = async () => {
     try {
       const response = await axios.post("http://localhost:8000/api/v1/login", {
         email,
         password,
       });
       setToken(response.data.token);
+      localStorage.setItem("token", response.data.token);
       navigate("/profile");
       console.log(response);
     } catch (error) {
@@ -45,7 +45,8 @@ const LoginPage = () => {
             <div className='mt-12'>
               <form
                 onSubmit={(e) => {
-                  submitHandler(e);
+                  e.preventDefault();
+                  submitHandler();
                 }}
               >
                 <div>
@@ -82,7 +83,10 @@ const LoginPage = () => {
                     className='bg-purple-500 text-gray-100 p-4 w-full rounded-full tracking-wide
                                 font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-purple-600
                                 shadow-lg'
-                    type='submit'
+                    omSubmit={(e) => {
+                      e.preventDefault();
+                      submitHandler();
+                    }}
                   >
                     Log In
                   </button>

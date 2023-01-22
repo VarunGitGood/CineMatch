@@ -1,15 +1,14 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import ProtectedRoute from "../components/ProtectedRoute";
 import { AuthProvider } from "../context/AuthContext";
 import profileBG from "../assets/profile-bg.webp";
 const Profile = () => {
   const { token } = useContext(AuthProvider);
-
-  return (
-    <>
-      <ProtectedRoute>
+  if (token)
+    return (
+      <>
         <Navbar />
         <div className='m-10 pb-12 border bg-white dark:bg-[#121212] '>
           <img src={profileBG} alt='' className='w-full h-40 border bg-cover' />
@@ -45,9 +44,11 @@ const Profile = () => {
             </div>
           </div>
         </div>
-      </ProtectedRoute>
-    </>
-  );
+      </>
+    );
+  else {
+    <Navigate to='/login' />;
+  }
 };
 
 export default Profile;
