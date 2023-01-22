@@ -45,8 +45,26 @@ def recommend_genre():
     recommended_movies = []
     # convert the indices to a json response
     for i in genre_similarity[:10]:
+        print(movie_list.iloc[i])
         recommended_movies.append(movie_list.iloc[i].to_dict())
     return jsonify(recommended_movies)
+
+@app.route('/genres', methods=["GET"])
+def get_genres():
+    # extract the genres column
+    dataset = pd.read_csv('movies1.csv')
+    for i in range(len(dataset['genres'])):
+        dataset['genres'][i] = dataset['genres'][i].replace(
+            '[', '').replace(']', '').split(',')
+        for j in range(0, len(dataset['genres'][i])):
+            dataset['genres'][i][j] = dataset['genres'][i][j].strip()
+    list2 = []
+    for i in range(len(dataset['genres'])):
+        for j in range(len(dataset['genres'][i])):
+            list2.append(dataset['genres'][i][j])
+        # return data as json
+    
+    return jsonify(list(set(list2)))
         
 
 if __name__ == '__main__':
