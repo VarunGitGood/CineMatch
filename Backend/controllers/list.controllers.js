@@ -61,7 +61,19 @@ exports.generateWatchlist = asyncHandler(async (req, res, next) => {
   }
 });
 
-exports.getGenre = asyncHandler(async (req, res, next) => {});
+exports.getGenre = asyncHandler(async (req, res, next) => {
+  try {
+    const response = await axios.get(`${URL}/genres`);
+    const { data } = response;
+    console.log(data);
+    res.status(200).json({
+      success: true,
+      data: data.data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 // add content to watchlist
 // list id is in params   which watchlist to add to

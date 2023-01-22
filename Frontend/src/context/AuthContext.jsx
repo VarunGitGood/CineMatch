@@ -11,7 +11,7 @@ const AuthContextProvide = (props) => {
 
   const validateToken = async () => {
     const token = await window.localStorage.getItem("token");
-    console.log(token);
+    // console.log(token);
     if (token) {
       const config = {
         headers: {
@@ -24,17 +24,19 @@ const AuthContextProvide = (props) => {
           "http://localhost:8000/api/v1/validate",
           config
         );
-        console.log(data, "validate");
+        // console.log(data, "validate");
         setUser({
           user: data.data,
           token,
           isAuthenticated: true,
         });
+        
       } catch (error) {
         console.log(error);
       }
     }
   };
+  // console.log(user, "user");
 
   useEffect(() => {
     validateToken();
