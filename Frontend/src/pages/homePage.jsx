@@ -1,11 +1,12 @@
 import React from "react";
 import Navbar from "../components/Navbar";
+import Card from "../components/Card";
 
 export default function homePage() {
   return (
     <div>
       <Navbar />
-      <h1>Homepage</h1>
+      <Card />
     </div>
   );
 }
