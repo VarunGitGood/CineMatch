@@ -50,7 +50,7 @@ export default function Popup() {
   };
 
   const handleGenreClick = (genre) => {
-    if(genreList.length == 4){
+    if(genreList.length == 4 && !genreList.includes(genre)){
       window.alert("You can select only 4 genres");
       return;
     }
