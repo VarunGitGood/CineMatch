@@ -7,8 +7,10 @@ import Brightness7Icon from "@mui/icons-material/Brightness7";
 import Box from "@mui/material/Box";
 import logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
+import { AuthProvider } from "../context/AuthContext";
 export const Navbar = () => {
   const { theme, toggleTheme } = useContext(themeProvider);
+  const { user } = useContext(AuthProvider);
   const [hamburger, setHamburger] = useState(true);
   return (
     <nav
@@ -17,15 +19,14 @@ export const Navbar = () => {
           items-center
           justify-between
           w-full
-          py-4
-          mt-3
-          md:py-0
-          px-4
+          py-2
+          px-12
+          md:mb-12
           text-lg text-gray-700
           bg-white
           dark:bg-[#121212]
           dark:text-gray-200
-          h-16
+          h-12
         '
     >
       <div>
@@ -56,7 +57,7 @@ export const Navbar = () => {
       <div
         className={`${
           hamburger && "hidden"
-        } w-full md:flex md:items-center md:w-auto bg-white dark:bg-[#121212]`}
+        } w-full p-4 md:flex md:items-center md:w-auto bg-white dark:bg-[#121212] z-10`}
         id='menu'
       >
         <ul
@@ -68,44 +69,18 @@ export const Navbar = () => {
               md:pt-0'
         >
           <li>
-            <a
+            <Link
               className='md:p-4 py-2 block hover:text-purple-400 dark:text-white '
-              href='#'
+              to='/'
             >
-              Features
-            </a>
+              Home
+            </Link>
           </li>
-          <li>
-            <a
-              className='md:p-4 py-2 block hover:text-purple-400 dark:text-white'
-              href='#'
-            >
-              Pricing
-            </a>
-          </li>
-          <li>
-            <a
-              className='md:p-4 py-2 block hover:text-purple-400 dark:text-white'
-              href='#'
-            >
-              Customers
-            </a>
-          </li>
-          <li>
-            <a
-              className='md:p-4 py-2 block hover:text-purple-400 dark:text-white'
-              href='#'
-            >
-              Blog
-            </a>
-          </li>
-          <Link to='/signup'>
-            <a
-              className='md:p-4 py-2 block hover:text-purple-400 text-purple-500'
-              href='#'
-            >
-              Sign Up
-            </a>
+          <Link
+            to='/signup'
+            className='md:p-4 py-2 block hover:text-purple-400 text-purple-500'
+          >
+            {user.isAuthenticated == true ? "My Dashboard" : "Get Started"}
           </Link>
           <li>
             <Box
@@ -113,9 +88,10 @@ export const Navbar = () => {
                 display: "flex",
                 width: "100%",
                 alignItems: "center",
-                justifyContent: "center",
+                justifyContent: "start",
                 bgcolor: theme == "dark" ? "#121212" : "#fff",
                 color: theme == "dark" ? "#fff" : "#121212",
+                marginLeft: "-0.5rem",
               }}
             >
               <IconButton

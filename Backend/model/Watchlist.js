@@ -8,8 +8,7 @@ const WatchlistSchema = new mongoose.Schema({
     },
     list: [
         {
-            type: mongoose.Schema.ObjectId,
-            ref: "content",
+            type: Object,
         }
     ]
 });
