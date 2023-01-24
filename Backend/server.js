@@ -1,7 +1,7 @@
 const express = require("express");
 const dot = require("dotenv");
 const colors = require("colors");
-const errorHandler = require("./middleware/error");
+const ErrorResponse = require("./middleware/error");
 const connection = require("./config/db");
 const cors = require("cors");
 
@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(cors())
 app.use("/api/v1", userRoutes)
 app.use("/api/v1/list", listRoutes)
-app.use(errorHandler);
+app.use(ErrorResponse);
 
 app.get("/", (req, res) => {
     res.send("Hello World");
